@@ -1,4 +1,4 @@
-для настройки: npm install
+для настройки: npm install &&
 npm install -g mocha
 
 
