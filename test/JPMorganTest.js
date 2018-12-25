@@ -9,6 +9,7 @@ describe('DefaultTest', function () {
     this.timeout(0); // turn on timeout if needed
     let capabilities = new Capabilities();
     capabilities.setProxy(proxy.manual({ http: argv.proxy }));
+    capabilities.addArguments=('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36');
     const driver = new Builder().withCapabilities(capabilities).forBrowser('chrome').build();
 
     driver.get('https://jpmorgan.chase.com/');
@@ -46,7 +47,13 @@ describe('DefaultTest', function () {
                 });
             })
         };
-        driver.saveScreenshot('snapshot1.png');
+        driver.saveScreenshot('test/TestResult/snapshot1.png');
+        console.log("The Screenshot was saved!");
     })
     after(async () => driver.quit());
 });
+
+
+
+// var options = new ChromeOptions();
+// options.addArguments("--proxy-server=socks5://" + host + ":" + port);
