@@ -39,7 +39,7 @@ function printLog(cookies) {
 }
 
 function getDate() {
-    return dateFormat(new Date(), "dd.mm.yyyy h:MM:ss");
+    return dateFormat(new Date(), "dd.mm.yyyy HH-MM-ss");
 }
 
 describe('DefaultTest', function () {
