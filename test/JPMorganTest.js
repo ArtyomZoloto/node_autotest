@@ -7,13 +7,10 @@ const dateFormat = require('dateformat');
 const argv = require('minimist')(process.argv.slice(2));
 console.dir('Test launched with params: login=' + argv.login + ' password=' + argv.password + ' proxy=' + argv.proxy);
 
-
-
 /** 
  * Set chrome command line options/switches
 */
 var chromeOptions = new chrome.Options();
-//chromeOptions.addArguments("test-type");
 chromeOptions.addArguments("start-maximized");
 //chromeOptions.addArguments("window-size=1680,965");
 chromeOptions.addArguments("ignore-certificate-errors");
@@ -25,27 +22,12 @@ chromeOptions.addArguments("disable-geolocation");
 if (argv.proxy) {
     chromeOptions.addArguments("proxy-server=http://" + argv.proxy);
 }
-
-//chromeOptions.addArguments("--js-flags=--expose-gc");
-//chromeOptions.addArguments("--enable-precise-memory-info");
-//chromeOptions.addArguments("--disable-popup-blocking");
-//chromeOptions.addArguments("--disable-default-apps");
-//chromeOptions.addArguments("--disable-infobars");
-
-
-
-
-//this.timeout(0); // turn on timeout if needed
-//let capabilities = new Capabilities();
-// capabilities.setProxy(proxy.manual({ http: argv.proxy }));
-// capabilities.addArguments=('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36');
 driver = new webdriver.Builder()
     .forBrowser("chrome")
     .setChromeOptions(chromeOptions)
     .build();
 
 driver.get('https://jpmorgan.chase.com/');
-
 
 function printLog(cookies) {
     return dateFormat(new Date(), "dd.mm.yyyy h:MM:ss")
@@ -57,7 +39,6 @@ function printLog(cookies) {
 }
 
 describe('DefaultTest', function () {
-
 
     this.timeout(0);
 
@@ -99,6 +80,3 @@ describe('DefaultTest', function () {
     })
     after(async () => driver.quit());
 });
-
-// var options = new ChromeOptions();
-// options.addArguments("--proxy-server=socks5://" + host + ":" + port);
