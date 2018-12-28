@@ -4,7 +4,7 @@
   "description": "web autotest for J.P.Morgan web site",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha test/DefaultTest.js --timeout 30000"
+    "test": "node_modules/.bin/mocha test/JPMorganTest.js --timeout 30000"
   },
   "author": "",
   "license": "ISC",
