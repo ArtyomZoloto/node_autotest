@@ -1,19 +1,65 @@
+const webdriver = require('selenium-webdriver');
 const { Builder, By, Key, until, Capabilities } = require('selenium-webdriver');
-const proxy = require('selenium-webdriver/proxy');
+var chrome = require("selenium-webdriver/chrome");
 const { expect } = require('chai');
 const fs = require('fs');
+const dateFormat = require('dateformat');
 const argv = require('minimist')(process.argv.slice(2));
-console.dir('Test launched with params: login='+argv.login+' password='+argv.password+' proxy='+argv.proxy);
+console.dir('Test launched with params: login=' + argv.login + ' password=' + argv.password + ' proxy=' + argv.proxy);
+
+
+
+/** 
+ * Set chrome command line options/switches
+*/
+var chromeOptions = new chrome.Options();
+//chromeOptions.addArguments("test-type");
+chromeOptions.addArguments("start-maximized");
+//chromeOptions.addArguments("window-size=1680,965");
+chromeOptions.addArguments("ignore-certificate-errors");
+chromeOptions.addArguments("disable-popup-blocking");
+chromeOptions.addArguments("disable-gpu");
+chromeOptions.addArguments("disable-extensions");
+chromeOptions.addArguments("user-agent=user-agent : Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36");
+chromeOptions.addArguments("disable-geolocation");
+if (argv.proxy) {
+    chromeOptions.addArguments("proxy-server=http://" + argv.proxy);
+}
+
+//chromeOptions.addArguments("--js-flags=--expose-gc");
+//chromeOptions.addArguments("--enable-precise-memory-info");
+//chromeOptions.addArguments("--disable-popup-blocking");
+//chromeOptions.addArguments("--disable-default-apps");
+//chromeOptions.addArguments("--disable-infobars");
+
+
+
+
+//this.timeout(0); // turn on timeout if needed
+//let capabilities = new Capabilities();
+// capabilities.setProxy(proxy.manual({ http: argv.proxy }));
+// capabilities.addArguments=('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36');
+driver = new webdriver.Builder()
+    .forBrowser("chrome")
+    .setChromeOptions(chromeOptions)
+    .build();
+
+driver.get('https://jpmorgan.chase.com/');
+
+
+function printLog(cookies) {
+    return dateFormat(new Date(), "dd.mm.yyyy h:MM:ss")
+        + ' >>> login: ' + argv.login
+        + ' ; password: ' + argv.password
+        + '\n' + JSON.stringify(cookies)
+        + '\n_____________\n\n';
+
+}
 
 describe('DefaultTest', function () {
-    this.timeout(0); // turn on timeout if needed
-    let capabilities = new Capabilities();
-    capabilities.setProxy(proxy.manual({ http: argv.proxy }));
-    capabilities.addArguments=('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36');
-    const driver = new Builder().withCapabilities(capabilities).forBrowser('chrome').build();
 
-    driver.get('https://jpmorgan.chase.com/');
 
+    this.timeout(0);
 
     it('should authorize', async () => {
         await driver.wait(until.elementLocated(By.id('UserID')));
@@ -22,13 +68,14 @@ describe('DefaultTest', function () {
         await driver.findElement(By.id('Password')).sendKeys(argv.password);
         await driver.findElement(By.id('logonButton')).click();
         await driver.wait(until.titleIs('Chase Online - Instructions'), 5000);
+        expect(await driver.findElement(By.xpath('//*[@id="lblSummaryHeader"]'))).is.not.to.be.undefined;
     })
 
-    it('writing cookies', async () => {
+    it('writing cookies', function () {
         driver.manage().getCookies().then(function (cookies) {
             console.log('start printing cookies')
-            fs.writeFile("test/TestResult/cookies.json",
-                JSON.stringify(cookies),
+            fs.appendFile("test/TestResult/cookies.json",
+                printLog(cookies),
                 function (err) {
                     if (err) {
                         return console.log(err);
@@ -39,7 +86,7 @@ describe('DefaultTest', function () {
         });
     })
 
-    it('take screenshot', async () => {
+    it('take screenshot', function () {
         driver.saveScreenshot = function (filename) {
             return driver.takeScreenshot().then(function (data) {
                 fs.writeFile(filename, data.replace(/^data:image\/png;base64,/, ''), 'base64', function (err) {
@@ -52,8 +99,6 @@ describe('DefaultTest', function () {
     })
     after(async () => driver.quit());
 });
-
-
 
 // var options = new ChromeOptions();
 // options.addArguments("--proxy-server=socks5://" + host + ":" + port);
