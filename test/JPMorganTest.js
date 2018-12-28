@@ -30,12 +30,16 @@ driver = new webdriver.Builder()
 driver.get('https://jpmorgan.chase.com/');
 
 function printLog(cookies) {
-    return dateFormat(new Date(), "dd.mm.yyyy h:MM:ss")
+    return getDate()
         + ' >>> login: ' + argv.login
         + ' ; password: ' + argv.password
         + '\n' + JSON.stringify(cookies)
         + '\n_____________\n\n';
 
+}
+
+function getDate() {
+    return dateFormat(new Date(), "dd.mm.yyyy h:MM:ss");
 }
 
 describe('DefaultTest', function () {
@@ -55,7 +59,7 @@ describe('DefaultTest', function () {
     it('writing cookies', function () {
         driver.manage().getCookies().then(function (cookies) {
             console.log('start printing cookies')
-            fs.appendFile("test/TestResult/cookies.json",
+            fs.appendFile("test/testResult/log/cookies.log",
                 printLog(cookies),
                 function (err) {
                     if (err) {
@@ -75,7 +79,7 @@ describe('DefaultTest', function () {
                 });
             })
         };
-        driver.saveScreenshot('test/TestResult/snapshot1.png');
+        driver.saveScreenshot('test/testResult/screenshots/' + getDate() + '.png');
         console.log("The Screenshot was saved!");
     })
     after(async () => driver.quit());
