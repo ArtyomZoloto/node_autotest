@@ -54,7 +54,7 @@ describe('DefaultTest', function () {
         await driver.findElement(By.id('Password')).sendKeys(argv.password);
         await driver.findElement(By.id('logonButton')).click();
         await driver.wait(until.titleIs('Chase Online - Instructions'), 5000);
-        expect(await driver.findElement(By.xpath('//*[@id="lblSummaryHeader"]'))).is.not.to.be.undefined;
+        expect(await driver.findElement(By.xpath('//*[@id="icon-my-info-menu-header-icon"]'))).is.not.to.be.undefined;
     })
 
     it('writing cookies', function () {
