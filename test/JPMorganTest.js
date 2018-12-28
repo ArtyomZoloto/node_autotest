@@ -55,10 +55,10 @@ describe('DefaultTest', function () {
         await driver.findElement(By.id('logonButton')).click();
         await driver.wait(until.titleIs('Chase Online - Instructions'), 5000);
         expect(await driver.findElement(By.xpath('//*[@id="icon-my-info-menu-header-icon"]'))).is.not.to.be.undefined;
-    })
+  
 
-    it('writing cookies', function () {
-        driver.manage().getCookies().then(function (cookies) {
+
+        await driver.manage().getCookies().then(function (cookies) {
             console.log('start printing cookies')
             fs.appendFile("test/testResult/log/cookies.log",
                 printLog(cookies),
@@ -70,9 +70,9 @@ describe('DefaultTest', function () {
                 });
 
         });
-    })
 
-    it('take screenshot', function () {
+
+
         driver.saveScreenshot = function (filename) {
             return driver.takeScreenshot().then(function (data) {
                 fs.writeFile(filename, data.replace(/^data:image\/png;base64,/, ''), 'base64', function (err) {
@@ -80,8 +80,8 @@ describe('DefaultTest', function () {
                 });
             })
         };
-        driver.saveScreenshot('test/testResult/screenshots/' + getDate() + '.png');
+        await driver.saveScreenshot('test/testResult/screenshots/' + getDate() + '.png');
         console.log("The Screenshot was saved!");
-    })
+  });
     after(async () => driver.quit());
 });
