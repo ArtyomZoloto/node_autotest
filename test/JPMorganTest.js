@@ -49,6 +49,7 @@ describe('DefaultTest', function () {
     it('should authorize', async () => {
         await driver.wait(until.elementLocated(By.id('UserID')));
         await driver.wait(until.elementLocated(By.id('Password')));
+		await driver.sleep(5000);
         await driver.findElement(By.id('UserID')).sendKeys(argv.login);
         await driver.findElement(By.id('Password')).sendKeys(argv.password);
         await driver.findElement(By.id('logonButton')).click();
