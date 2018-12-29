@@ -17,7 +17,7 @@ chromeOptions.addArguments("ignore-certificate-errors");
 chromeOptions.addArguments("disable-popup-blocking");
 chromeOptions.addArguments("disable-gpu");
 chromeOptions.addArguments("disable-extensions");
-chromeOptions.addArguments("user-agent=user-agent : Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36");
+chromeOptions.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36");
 chromeOptions.addArguments("disable-geolocation");
 if (argv.proxy) {
     chromeOptions.addArguments("proxy-server=socks5://" + argv.proxy);
